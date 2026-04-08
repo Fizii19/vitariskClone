@@ -2,11 +2,12 @@ import { useState } from "react";
 import IconDarah from "../assets/icon-darah.png";
 import IconShield from "../assets/Container.svg";
 import { ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function JantungPage() {
   const [umur, setUmur] = useState("");
   const [gender, setGender] = useState("");
-  const [nyeriDada, setNyeriDada] = useState("");
+  const [nyeriDada, setNyeriDada] = useState("tidak pernah");
   const [tekananDarah, setTekananDarah] = useState("");
   const [kolesterol, setKolesterol] = useState("");
   const [detakJantung, setDetakJantung] = useState("");
@@ -14,33 +15,22 @@ export default function JantungPage() {
   const [exangina, setExangina] = useState("");
   const [merokok, setMerokok] = useState("");
   const [isOn, setIsOn] = useState(true);
+  const navigate = useNavigate();
 
   const handleUmur = (e) => {
-    let val = e.target.value;
-    if (val === "") return setUmur("");
-    val = Math.max(1, Math.min(100, Number(val)));
-    setUmur(val);
+    setUmur(e.target.value);
   };
 
   const handleTekanan = (e) => {
-    let val = e.target.value;
-    if (val === "") return setTekananDarah("");
-    val = Math.max(60, Math.min(250, Number(val)));
-    setTekananDarah(val);
+    setTekananDarah(e.target.value);
   };
 
   const handleKolesterol = (e) => {
-    let val = e.target.value;
-    if (val === "") return setKolesterol("");
-    val = Math.max(50, Math.min(400, Number(val)));
-    setKolesterol(val);
+    setKolesterol(e.target.value);
   };
 
   const handleDetakJantung = (e) => {
-    let val = e.target.value;
-    if (val === "") return setTekananDarah("");
-    val = Math.max(60, Math.min(200, Number(val)));
-    setDetakJantung(val);
+    setDetakJantung(e.target.value);
   };
 
   const handleSubmit = async (e) => {
@@ -59,7 +49,7 @@ export default function JantungPage() {
       smoking: merokok,
     };
 
-    console.log(payload); // cek dulu sebelum kirim
+    console.log("PAYLOAD:", payload); // cek dulu sebelum kirim
 
     try {
       const res = await fetch("http://localhost:3000/api/predict/heart", {
@@ -71,6 +61,7 @@ export default function JantungPage() {
       });
 
       const data = await res.json();
+      navigate("/result", { state: { ...data, type: "heart", }, });
       console.log("HASIL:", data);
     } catch (err) {
       console.error(err);
@@ -92,6 +83,8 @@ export default function JantungPage() {
               type="number"
               value={umur}
               onChange={handleUmur}
+              min={1}
+              max={120}
               placeholder="Contoh : 17"
               required
               className="border-2  border-mint-green/60 rounded-xl p-3 focus:outline-none focus:border-pure-green focus:ring-2 focus:ring-pure-green/30"
@@ -135,12 +128,14 @@ export default function JantungPage() {
       <h2 className="mt-15 font-bold p-5 px-20 text-sub-title mb-3">
         —— Indikator Klinis & Gaya Hidup
       </h2>
+
       <div className="w-5.5/6 mx-20 " id="nyeri">
         <label htmlFor="" className="font-semibold">
           Intensitar Nyeri di Dada{" "}
         </label>
         <select
           name="tingkatNyeri"
+          value={nyeriDada}
           id=""
           onChange={(e) => setNyeriDada(e.target.value)}
           required
@@ -152,6 +147,7 @@ export default function JantungPage() {
           <option value="nyeri berat">Sering Nyeri di Dada</option>
         </select>
       </div>
+
       <div className="flex justify-between mt-15">
         <div id="tekananDarah" className="flex w-100 mx-20 flex-col relative">
           <label htmlFor="" className="my-3 font-semibold">
@@ -159,6 +155,8 @@ export default function JantungPage() {
           </label>
           <input
             type="number"
+            min="50"
+            max="250"
             value={tekananDarah}
             onChange={handleTekanan}
             placeholder="Contoh : 17"
@@ -175,6 +173,8 @@ export default function JantungPage() {
           </label>
           <input
             type="number"
+            min="50"
+            max="400"
             value={kolesterol}
             onChange={handleKolesterol}
             placeholder="Contoh : 170"
@@ -223,6 +223,8 @@ export default function JantungPage() {
             </label>
             <input
               type="number"
+              min="60"
+              max="200"
               value={detakJantung}
               onChange={handleDetakJantung}
               placeholder="Contoh : 170"

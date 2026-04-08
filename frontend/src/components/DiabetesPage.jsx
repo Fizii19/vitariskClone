@@ -2,7 +2,7 @@ import { useState } from "react";
 import IconDarah from "../assets/icon-darah.png";
 import IconShield from "../assets/Container.svg";
 import { ArrowRight } from "lucide-react";
-
+import { useNavigate } from "react-router-dom";
 export default function DiabetesPage() {
   const [umur, setUmur] = useState("");
   const [gender, setGender] = useState("");
@@ -12,40 +12,12 @@ export default function DiabetesPage() {
   const [makananManis, setMakananManis] = useState("");
   const [olahraga, setOlahraga] = useState("");
   const [bmi, setBmi] = useState("");
+  const navigate = useNavigate();
 
-  const handleUmur = (e) => {
-    let val = e.target.value;
-    if (val === "") return setUmur("");
-    val = Math.max(1, Math.min(100, Number(val)));
-    setUmur(val);
-  };
-  const handleGula = (e) => {
-    let val = e.target.value;
-    if (val === "") return setGula("");
-    val = Math.max(50, Math.min(500, Number(val)));
-    setGula(val);
-  }
 
-  const handleBMI = (e) => {
-      let val = e.target.value;
-
-      if (val === "") return setBmi("");
-
-      val = Math.max(10, Math.min(50, Number(val)));
-      setBmi(val);
-    };
-
-  const handleSistolik = (e) => {
-    let val = e.target.value;
-    if (val === "") return setSistolik("");
-    val = Math.max(80, Math.min(200, Number(val)));
-    setSistolik(val);
-  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    
 
     const payload = {
       age: Number(umur),
@@ -70,6 +42,12 @@ export default function DiabetesPage() {
       });
 
       const data = await res.json();
+      navigate("/result", {
+        state: {
+          ...data,
+          type: "diabetes",
+        },
+      });
       console.log("HASIL:", data);
     } catch (err) {
       console.error(err);
@@ -77,7 +55,11 @@ export default function DiabetesPage() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="shadow m-5 rounded-xl h-full">
+    <form
+      onSubmit={handleSubmit}
+      type="post"
+      className="shadow m-5 rounded-xl h-full"
+    >
       <div>
         <h2 className="font-bold p-5 px-20 text-sub-title mb-3">
           —— Data Personal
@@ -90,8 +72,10 @@ export default function DiabetesPage() {
             <input
               type="number"
               value={umur}
-              onChange={handleUmur}
+              onChange={(e) => setUmur(e.target.value)}
               placeholder="Contoh : 17"
+              min={1}
+              max={120}
               required
               className="border-2  border-mint-green/60 rounded-xl p-3 focus:outline-none focus:border-pure-green focus:ring-2 focus:ring-pure-green/30"
             />
@@ -142,7 +126,9 @@ export default function DiabetesPage() {
           <input
             type="number"
             value={bmi}
-            onChange={handleBMI}
+            onChange={(e) => setBmi(e.target.value)}
+            min={10}
+            max={50}
             placeholder="Contoh : 23.5"
             required
             className="border-2  border-mint-green/60 rounded-xl p-3 focus:outline-none focus:border-pure-green focus:ring-2 focus:ring-pure-green/30"
@@ -159,7 +145,9 @@ export default function DiabetesPage() {
             type="number"
             placeholder="Contoh : 170"
             value={gula}
-            onChange={handleGula}
+            onChange={(e) => setGula(e.target.value)}
+            min={50}
+            max={500}
             required
             className="border-2  border-mint-green/60 rounded-xl p-3 focus:outline-none focus:border-pure-green focus:ring-2 focus:ring-pure-green/30"
           />
@@ -176,7 +164,7 @@ export default function DiabetesPage() {
               type="number"
               placeholder="Contoh : 17"
               value={sistolik}
-              onChange={handleSistolik}
+              onChange={(e) => setSistolik(e.target.value)}
               required
               className="border-2  border-mint-green/60 rounded-xl p-3 focus:outline-none focus:border-pure-green focus:ring-2 focus:ring-pure-green/30"
             />

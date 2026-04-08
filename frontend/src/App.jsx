@@ -11,6 +11,7 @@ import AboutPage from "./components/AboutPage";
 import JantungPage from "./components/JantungPage";
 import DiabetesPage from "./components/DiabetesPage";
 import KolestrolPage from "./components/KolestrolPage";
+import PageResult from "./components/PageResult";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             path="/landing/deteksi-kolestrol"
             element={<KolestrolPage />}
           />
+          <Route path="/result" element={<PageResult />} /> 
         </Routes>
       </BrowserRouter>
     </GoogleOAuthProvider>

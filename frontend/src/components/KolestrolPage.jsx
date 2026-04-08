@@ -2,6 +2,7 @@ import { useState } from "react";
 import IconDarah from "../assets/icon-darah.png";
 import IconShield from "../assets/Container.svg";
 import { ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function KolestrolPage() {
   const [umur, setUmur] = useState("");
@@ -11,19 +12,7 @@ export default function KolestrolPage() {
   const [olahraga, setOlahraga] = useState("");
   const [merokok, setMerokok] = useState("");
   const [makananBerlemak, setMakananBerlemak] = useState("");
-
-  const handleUmur = (e) => {
-    let val = e.target.value;
-    if (val === "") return setUmur("");
-    val = Math.max(1, Math.min(100, Number(val)));
-    setUmur(val);
-  };
-  const handleSistolik = (e) => {
-    let val = e.target.value;
-    if (val === "") return setSistolik("");
-    val = Math.max(80, Math.min(200, Number(val)));
-    setSistolik(val);
-  }
+  const navigate = useNavigate();
   
 
   const handleSubmit = async (e) => {
@@ -50,7 +39,13 @@ export default function KolestrolPage() {
         body: JSON.stringify(payload),
       });
 
-      const data = await res.json();
+       const data = await res.json();
+      navigate("/result", {
+        state: {
+          ...data,
+          type: "cholesterol",
+        },
+      });
       console.log("HASIL:", data);
     } catch (err) {
       console.error(err);
@@ -71,7 +66,9 @@ export default function KolestrolPage() {
             <input
               type="number"
               value={umur}
-              onChange={handleUmur}
+              min={1}
+              max={120}
+              onChange={(e) => setUmur(e.target.value)}
               placeholder="Contoh : 17"
               required
               className="border-2  border-mint-green/60 rounded-xl p-3 focus:outline-none focus:border-pure-green focus:ring-2 focus:ring-pure-green/30"
@@ -125,7 +122,9 @@ export default function KolestrolPage() {
             type="number"
             placeholder="Contoh : 120"
             value={sistolik}
-            onChange={handleSistolik}
+            onChange={(e) => setSistolik(e.target.value)}
+            min={80}
+            max={200}
             required
             className="border-2  border-mint-green/60 rounded-xl p-3 focus:outline-none focus:border-pure-green focus:ring-2 focus:ring-pure-green/30"
           />
@@ -216,12 +215,12 @@ export default function KolestrolPage() {
                 <input
                   type="radio"
                   name="merokok"
-                  value="0"
+                  value="tidak"
                   onChange={(e) => setMerokok(e.target.value)}
                   required
                   className="accent-pure-green"
                 />
-                <span>Tidak Pernah</span>
+                <span>Tidak</span>
               </label>
 
               <label className="flex items-center gap-2 cursor-pointer">
@@ -258,7 +257,7 @@ export default function KolestrolPage() {
                 <input
                   type="radio"
                   name="olahraga"
-                  value="0"
+                  value="tidak pernah"
                   onChange={(e) => setOlahraga(e.target.value)}
                   required
                   className="accent-pure-green"
@@ -270,7 +269,7 @@ export default function KolestrolPage() {
                 <input
                   type="radio"
                   name="olahraga"
-                  value="1"
+                  value="jarang"
                   onChange={(e) => setOlahraga(e.target.value)}
                   required
                   className="accent-pure-green"
@@ -282,12 +281,12 @@ export default function KolestrolPage() {
                 <input
                   type="radio"
                   name="olahraga"
-                  value="3-5x seminggu"
+                  value="3xseminggu"
                   onChange={(e) => setOlahraga(e.target.value)}
                   required
                   className="accent-pure-green"
                 />
-                <span>3-5x Seminggu</span>
+                <span>3x Seminggu</span>
               </label>
             </div>
           </div>

@@ -1,7 +1,23 @@
 import icon from "../assets/icon.svg";
 import Profile from "../assets/Profile.png";
+import Doctor from "../assets/doctor.png";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useEffect } from "react";
+import {
+  ArrowRight,
+  Bot,
+  ChartArea,
+  ChartColumn,
+  ChartLine,
+  Clipboard,
+  Droplet,
+  FileText,
+  Heart,
+  HeartPulse,
+  Stethoscope,
+  TestTubeDiagonal,
+} from "lucide-react";
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -42,6 +58,29 @@ export default function LandingPage() {
       console.warn(`Element dengan id "${id}" tidak ditemukan`);
     }
   };
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = menuItems.map((item) => item.id);
+
+      let current = "home";
+
+      sections.forEach((id) => {
+        const section = document.getElementById(id);
+        if (section) {
+          const sectionTop = section.offsetTop - 120;
+          if (window.scrollY >= sectionTop) {
+            current = id;
+          }
+        }
+      });
+
+      setActive(current);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const handleSendChat = async () => {
     const messageToSend = chatInput.trim();
@@ -82,7 +121,7 @@ export default function LandingPage() {
   return (
     <div className="font-sans">
       {/* Bagian Navbar  */}
-      <nav className="top-0 w-full z-50 bg-white/80 backdrop-blur-md shadow-sm flex items-center px-10 py-4 relative">
+      <nav className="top-0 w-full z-50 bg-white/80 backdrop-blur-md shadow-sm flex items-center px-10 py-4 fixed left-0 ">
         <div className="flex items-center gap-3">
           <img src={icon} className="h-9" alt="logo" />
         </div>
@@ -132,7 +171,7 @@ export default function LandingPage() {
             />
           </svg>
           <svg
-            className="absolute bottom-0 right-0 w-[600px] opacity-25 blur-2xl"
+            className="absolute bottom-0 right-0 w-150 opacity-25 blur-2xl"
             viewBox="0 0 500 500"
           >
             <path
@@ -141,7 +180,7 @@ export default function LandingPage() {
             />
           </svg>
           <svg
-            className="absolute top-0 left-0 w-[600px] opacity-20 blur-2xl rotate-180"
+            className="absolute top-0 left-0 w-150 opacity-20 blur-2xl rotate-180"
             viewBox="0 0 500 500"
           >
             <path
@@ -159,8 +198,8 @@ export default function LandingPage() {
             risiko kesehatan berdasarkan kondisi dan kebiasaanmu.
           </p>
           <div className="flex gap-4 relative z-10">
-            <button className="bg-[#295f4e] text-white px-7 py-3 rounded-2xl">
-              Mulai Deteksi →
+            <button className="bg-[#295f4e] text-white px-7 py-3 rounded-2xl flex gap-3 items-center">
+              Mulai Deteksi <ArrowRight size={18} />
             </button>
             <button
               onClick={() => navigate("/login")}
@@ -223,8 +262,8 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-3 gap-10">
             <div className="bg-white p-10 rounded-3xl border border-gray-200 h[300px] flex flex-col justify-between">
               <div>
-                <div className="w-14 h-14 bg-red-100 rounded-2xl flex items-center justify-center mb-6 text-xl">
-                  🫀
+                <div className="w-14 h-14 bg-red-100 rounded-2xl flex items-center justify-center mb-6 text-xl text-red-400">
+                  <HeartPulse />
                 </div>
                 <h3 className="font-semibold text-lg mb-2 text-left">
                   Deteksi Jantung
@@ -243,8 +282,8 @@ export default function LandingPage() {
             </div>
             <div className="bg-white p-10 rounded-3xl border border-gray-200 h[300px] flex flex-col justify-between">
               <div>
-                <div className="w-14 h-14 bg-red-200 rounded-2xl flex items-center justify-center mb-6 text-xl">
-                  🩸
+                <div className="w-14 h-14 bg-red-200 rounded-2xl flex items-center justify-center mb-6 text-xl text-red-600">
+                  <Droplet />
                 </div>
                 <h3 className="font-semibold text-lg mb-2 text-left">
                   Deteksi Diabetes
@@ -258,15 +297,15 @@ export default function LandingPage() {
 
               <button
                 onClick={() => navigate("/landing/deteksi-diabetes")}
-                className="text-[#295f4e] font-medium flex items-center gap-1"
+                className="text-[#295f4e] font-medium flex mt-2 items-center gap-1"
               >
                 Mulai Sekarang →
               </button>
             </div>
             <div className="bg-white p-10 rounded-3xl border border-gray-200 h[300px] flex flex-col justify-between">
               <div>
-                <div className="w-14 h-14 bg-yellow-100 rounded-2xl flex items-center justify-center mb-6 text-xl">
-                  🧈
+                <div className="w-14 h-14 bg-yellow-100 rounded-2xl flex items-center justify-center mb-6 text-xl text-yellow-600">
+                  <ChartLine />
                 </div>
                 <h3 className="font-semibold text-lg mb-2 text-left">
                   Deteksi Kolesterol
@@ -302,8 +341,10 @@ export default function LandingPage() {
             Cara Kerja dengan 6 Langkah Yang Mudah
           </h2>
           <div className="grid lg:grid-cols-3 gap-10 justify-items-center">
-            <div className="bg-white p-10 rounded-3xl border border-gray-200 min-h[300px] justify-center text-center hover:-translate-y-1 transition">
-              <div className="text-2xl mb-3">📋</div>
+            <div className="bg-white p-10 rounded-3xl border border-gray-200 min-h[300px] flex flex-col items-center justify-center text-center hover:-translate-y-1 transition">
+              <div className="text-2xl bg-gray-100 rounded-xl grid place-items-center size-12 mb-3 text-dark-green-teal">
+                <Clipboard />
+              </div>
               <h3 className="text-5xl font-bold text-[#295f4e] mb-3">01</h3>
               <p className="font-semibold mb-2">Jawab Pertanyaan</p>
               <p className="text-gray-500 text-sm leading-relaxed max-w-xs">
@@ -311,8 +352,10 @@ export default function LandingPage() {
                 kolesterol.
               </p>
             </div>
-            <div className="bg-white p-10 rounded-3xl border border-gray-200 min-h[300px]  justify-center text-center hover:-translate-y-1 transition">
-              <div className="text-2xl mb-3">📊</div>
+            <div className="bg-white p-10 rounded-3xl border border-gray-200 min-h[300px] flex flex-col items-center justify-center text-center hover:-translate-y-1 transition">
+              <div className="text-2xl mb-3 2xl bg-gray-100 rounded-xl grid place-items-center size-12 text-dark-green-teal">
+                <ChartColumn />
+              </div>
               <h3 className="text-5xl font-bold text-[#295f4e] mb-3">02</h3>
               <p className="font-semibold mb-2">Dapatkan Hasil</p>
               <p className="text-gray-500 text-sm leading-relaxed max-w-xs">
@@ -320,16 +363,20 @@ export default function LandingPage() {
                 kesehatan.
               </p>
             </div>
-            <div className="bg-white p-10 rounded-3xl border border-gray-200 min-h[300px]  justify-center text-center hover:-translate-y-1 transition">
-              <div className="text-2xl mb-3">🤖</div>
+            <div className="bg-white p-10 rounded-3xl border border-gray-200 min-h[300px] flex flex-col items-center justify-center text-center hover:-translate-y-1 transition">
+              <div className="text-2xl mb-3 2xl bg-gray-100 rounded-xl grid place-items-center size-12 text-dark-green-teal">
+                <Bot />
+              </div>
               <h3 className="text-5xl font-bold text-[#295f4e] mb-3">03</h3>
               <p className="font-semibold mb-2">Chat dengan AI</p>
               <p className="text-gray-500 text-sm leading-relaxed max-w-xs">
                 Sistem memproses data menggunakan model machine learning.
               </p>
             </div>
-            <div className="bg-white p-10 rounded-3xl border border-gray-200 min-h[300px] justify-center text-center hover:-translate-y-1 transition">
-              <div className="text-2xl mb-3">📈</div>
+            <div className="bg-white p-10 rounded-3xl border border-gray-200 min-h[300px] flex flex-col items-center justify-center text-center hover:-translate-y-1 transition">
+              <div className="text-2xl mb-3 2xl bg-gray-100 rounded-xl grid place-items-center size-12 text-dark-green-teal">
+                <ChartArea />
+              </div>
               <h3 className="text-5xl font-bold text-[#295f4e] mb-3">04</h3>
               <p className="font-semibold mb-2">Analisis Hasil</p>
               <p className="text-gray-500 text-sm leading-relaxed max-w-xs">
@@ -337,8 +384,10 @@ export default function LandingPage() {
                 memengaruhi.
               </p>
             </div>
-            <div className="bg-white p-10 rounded-3xl border border-gray-200 min-h[300px]  justify-center text-center hover:-translate-y-1 transition">
-              <div className="text-2xl mb-3">🩺</div>
+            <div className="bg-white p-10 rounded-3xl border border-gray-200 min-h[300px] flex flex-col items-center justify-center text-center hover:-translate-y-1 transition">
+              <div className="text-2xl mb-3 2xl bg-gray-100 rounded-xl grid place-items-center size-12 text-dark-green-teal">
+                <Stethoscope />
+              </div>
               <h3 className="text-5xl font-bold text-[#295f4e] mb-3">05</h3>
               <p className="font-semibold mb-2">Saran & Tindak Lanjut</p>
               <p className="text-gray-500 text-sm leading-relaxed max-w-xs">
@@ -346,8 +395,10 @@ export default function LandingPage() {
                 medis.
               </p>
             </div>
-            <div className="bg-white p-10 rounded-3xl border border-gray-200 min-h[300px]  justify-center text-center hover:-translate-y-1 transition">
-              <div className="text-2xl mb-3">📄</div>
+            <div className="bg-white p-10 rounded-3xl border border-gray-200 min-h[300px] flex flex-col items-center justify-center text-center hover:-translate-y-1 transition">
+              <div className="text-2xl mb-3 2xl bg-gray-100 rounded-xl grid place-items-center size-12 text-dark-green-teal">
+                <FileText />
+              </div>
               <h3 className="text-5xl font-bold text-[#295f4e] mb-3">06</h3>
               <p className="font-semibold mb-2">Tampilkan Rekomendasi</p>
               <p className="text-gray-500 text-sm leading-relaxed max-w-xs">
@@ -376,7 +427,7 @@ export default function LandingPage() {
           <div className="bg-white rounded-2xl p-6 shadow-md border border-gray-100 hover:shadow-lg transition duration-300">
             <div className="flex items-start gap-4">
               <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-gray-100">
-                ❤️
+                <Heart className="text-dark-green-teal" />
               </div>
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
@@ -403,7 +454,7 @@ export default function LandingPage() {
           <div className="bg-white rounded-2xl p-6 shadow-md border border-gray-100 hover:shadow-lg transition duration-300">
             <div className="flex items-start gap-4">
               <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-gray-100">
-                🩺
+                <Stethoscope className="text-dark-green-teal" />
               </div>
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
@@ -429,7 +480,7 @@ export default function LandingPage() {
             <div className="flex items-start gap-4">
               <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-gray-100">
                 {" "}
-                🧪
+                <TestTubeDiagonal className="text-dark-green-teal" />
               </div>
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
@@ -481,7 +532,7 @@ export default function LandingPage() {
           </div>
 
           <div className="hidden md:block justify-end">
-            <div className="bg-white/25 backdrop-blur-2xl rounded-[2rem] p-8">
+            <div className="bg-white/25 backdrop-blur-2xl rounded-4xl p-8">
               <div className="space-y-4 mb-6 h-64 overflow-y-auto pr-2 custom-scrollbar">
                 {messages.map((message, index) => (
                   <div
@@ -550,18 +601,10 @@ export default function LandingPage() {
         </div>
       </div>
       {/* Call to Action / artikel blog ajakan  */}
-      <section className="bg-[#ecf4f1] from-[#e6f4f1] to-white px-6 md:px-12 py-24 scroll-mt[90px]">
-        <div className="max-w-10xl">
-          <div className="relative bg-white/70 backdrop-blur-xl border border-gray-200 rounded-3xl p-10 flex items-center justify-between gap-10">
-            <svg
-              className="absolute bottom-0 right-0 w-[500px] opacity-20 blur-2xl"
-              viewBox="0 0 500 500"
-            >
-              <path
-                fill="#22c55e"
-                d="M0,320 C120,420 380,200 500,300 L500,500 L0,500 Z"
-              />
-            </svg>
+      <section className="bg-[#ecf4f1] from-[#e6f4f1] to-white px-6 md:px-12 py-24 scroll-mt-22.5">
+        <div className="max-w-10xl rounded-3xl grid grid-cols-2  bg-white/70 backdrop-blur-xl border border-gray-200 ">
+          <div className="relative p-10 flex items-center justify-between gap-10">
+            
             <div className="absolute -top-20 -left-20 w-72 h-72 bg-green-300 opacity-20 rounded-full blur-3xl"></div>
             <div className="max-w-lg relative z-10">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4 leading-snug">
@@ -578,12 +621,25 @@ export default function LandingPage() {
               <div className="flex flex-wrap gap-4">
                 <button
                   onClick={() => navigate("/login")}
-                  className="bg-[#295f4e] text-white px-7 py-3 rounded-xl font-medium"
+                  className="bg-[#295f4e] text-white px-7 py-3 rounded-xl font-medium flex gap-4 items-center"
                 >
-                  Mulai Deteksi Gratis →
+                  Mulai Deteksi Gratis <ArrowRight size={18} />
                 </button>
               </div>
             </div>
+          </div>
+          <div className="relative grid place-items-center">
+            <svg
+              className="absolute bottom-0 right-0 w-125 opacity-20 blur-2xl -z-10 "
+              viewBox="0 0 500 500"
+            >
+              <path
+                fill="#22c55e"
+                d="M0,320 C120,420 380,200 500,300 L500,500 L0,500 Z"
+              />
+            </svg>
+            <div className="absolute inset-0 bg-linear-to-b from-transparent to-[#fafcfb] from-70% rounded-3xl"></div>
+            <img src={Doctor} className="h-100 object-contain" alt="" />
           </div>
         </div>
       </section>
@@ -613,7 +669,7 @@ export default function LandingPage() {
           </div>
 
           <div>
-            <h4 className="font-semibold mb-3 text-gray-900">Deteksi</h4>
+            <h4 className="font-semibold mb-3 text-gray-900">Fitur</h4>
             <ul className="text-gray-500 text-sm space-y-2">
               <li>Deteksi Jantung</li>
               <li>Deteksi Diabetes</li>

@@ -10,6 +10,7 @@ import {
   ChartArea,
   ChartColumn,
   ChartLine,
+  ChevronRight,
   Clipboard,
   Droplet,
   FileText,
@@ -277,7 +278,7 @@ export default function LandingPage() {
                 onClick={() => navigate("/landing/deteksi-jantung")}
                 className="text-[#295f4e] font-medium flex items-center gap-1"
               >
-                Mulai Sekarang →
+                Mulai Sekarang <ChevronRight size={18} />
               </button>
             </div>
             <div className="bg-white p-10 rounded-3xl border border-gray-200 h[300px] flex flex-col justify-between">
@@ -299,7 +300,7 @@ export default function LandingPage() {
                 onClick={() => navigate("/landing/deteksi-diabetes")}
                 className="text-[#295f4e] font-medium flex mt-2 items-center gap-1"
               >
-                Mulai Sekarang →
+                Mulai Sekarang <ChevronRight size={18} />
               </button>
             </div>
             <div className="bg-white p-10 rounded-3xl border border-gray-200 h[300px] flex flex-col justify-between">
@@ -319,7 +320,7 @@ export default function LandingPage() {
                 onClick={() => navigate("/landing/deteksi-kolestrol")}
                 className="text-[#295f4e] font-medium flex items-center gap-1"
               >
-                Mulai Sekarang →
+                Mulai Sekarang <ChevronRight size={18} />
               </button>
             </div>
           </div>

@@ -16,6 +16,7 @@ import {
   FileText,
   Heart,
   HeartPulse,
+  SendHorizonal,
   Stethoscope,
   TestTubeDiagonal,
 } from "lucide-react";
@@ -526,9 +527,9 @@ export default function LandingPage() {
             </ul>
             <button
               onClick={() => handleClick("sumberData")}
-              className="bg-white text-[#295f4e] px-6 py-3 rounded-xl font-medium"
+              className="bg-white text-[#295f4e] px-6 mt-12 py-3 rounded-xl font-medium"
             >
-              Chat AI Sekarang →
+              Chat AI Sekarang 
             </button>
           </div>
 
@@ -592,7 +593,9 @@ export default function LandingPage() {
                         Tunggu
                       </>
                     ) : (
-                      "Kirim →"
+                      <>
+                        Kirim <SendHorizonal size={18} />
+                      </>
                     )}
                   </button>
                 </div>
@@ -605,7 +608,6 @@ export default function LandingPage() {
       <section className="bg-[#ecf4f1] from-[#e6f4f1] to-white px-6 md:px-12 py-24 scroll-mt-22.5">
         <div className="max-w-10xl rounded-3xl grid grid-cols-2  bg-white/70 backdrop-blur-xl border border-gray-200 ">
           <div className="relative p-10 flex items-center justify-between gap-10">
-            
             <div className="absolute -top-20 -left-20 w-72 h-72 bg-green-300 opacity-20 rounded-full blur-3xl"></div>
             <div className="max-w-lg relative z-10">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4 leading-snug">
@@ -686,7 +688,7 @@ export default function LandingPage() {
             </p>
 
             <button className="w-full bg-black text-white py-2 rounded-lg text-sm hover:opacity-90 transition">
-              ▶️ Google Play
+               Google Play
             </button>
           </div>
         </div>

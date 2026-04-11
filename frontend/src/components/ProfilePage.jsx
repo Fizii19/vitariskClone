@@ -1,130 +1,197 @@
-import icon from "../assets/icon.svg";
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Key,
+  Activity,
+  BarChart3,
+  HeartPulse,
+} from "lucide-react";
 
 export default function ProfilePage() {
-  const [showPassword, setShowPassword] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate();
   const user = location.state || {};
+  const navigate = useNavigate();
 
   const [name, setName] = useState(user.name || "");
   const [email, setEmail] = useState(user.email || "");
-  const [password, setPassword] = useState("");
-  const [phone, setPhone] = useState("");
+  const [medicalHistory, setMedicalHistory] = useState(
+    user.medicalHistory || "",
+  );
+  const [statusKesehatan, setStatusKesehatan] = useState(
+    user.statusKesehatan || "",
+  );
+  const [jumlahPengecekan, setJumlahPengecekan] = useState(
+    user.jumlahPengecekan || "",
+  );
 
   return (
-    <div className="bg-slate-50 min-h-screen font-sans">
-      <nav className="p-5 bg-white border-b border-gray-100 flex items-center justify-between sticky top-0 z-10">
-        <img
-          src={icon}
-          className="h-10 cursor-pointer"
-          alt="logo"
-          onClick={() => navigate("/")}
-        />
-      </nav>
+    <div className="min-h-screen bg-gray-50">
+      {/* NAVBAR */}
+      <div className="relative flex items-center justify-between px-7 py-4 bg-white shadow-sm  top-0 z-50">
+        {/* LEFT */}
+        <div className="flex items-center gap-3">
+          <Link
+            to="/"
+            className="flex gap-3 text-lg font-medium text-[#295f4e] items-center px-3 py-1 rounded-xl"
+          >
+            <ChevronLeft size={22} /> Kembali
+          </Link>
+        </div>
 
-      <div className="max-w-5xl mx-auto px-8 py-12">
-        {/* Profile Card */}
-        <div className="bg-white rounded-3xl shadow-sm border border-gray-100">
-          <div className="p-8 md:p-12 to-transparent">
-            <div className="flex flex-col md:flex-row items-center gap-9">
-              <div className="w-24 h-24 bg-[#327E66] rounded-full flex items-center justify-center text-3xl font-regular text-white shadow-lg">
-                {name.charAt(0)?.toUpperCase() || "User"}
-              </div>
-              <div className="text-center md:text-left">
-                <h4 className="text-3xl font-regular text-black">
-                  {name || "Hai, User"}
-                </h4>
-              </div>
-            </div>
+        {/* LOGO */}
+        <img
+          src="/icons2.svg"
+          alt="logo"
+          className="h-7 absolute left-1/2 -translate-x-1/2"
+        />
+
+        {/* RIGHT */}
+        <div className="flex items-center gap-4">
+          <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center font-semibold">
+            {name ? name.charAt(0).toUpperCase() : "U"}
           </div>
 
-          {/* Form Section */}
-          <div className="p-8 md:p-12">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-7">
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700 ml-1">
-                  Nama Lengkap
-                </label>
+          <button
+            onClick={() => navigate("/history")}
+            className="bg-[#295f4e] text-white px-5 py-2 rounded-full hover:bg-[#1f4a3c] transition"
+          >
+            History
+          </button>
+        </div>
+      </div>
+
+      {/* CONTENT */}
+      <div className="flex justify-center p-7 mt-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-7 w-full max-w-7xl items-stretch">
+          {/* LEFT CARD */}
+          <div className="bg-white rounded-2xl shadow p-7 text-center flex flex-col min-h-500px">
+            {/* Avatar */}
+            <div className="w-20 h-20 mx-auto rounded-xl bg-[#295f4e] text-white flex items-center justify-center text-3xl font-bold">
+              {name ? name.charAt(0).toUpperCase() : "U"}
+            </div>
+
+            <h2 className="mt-4 text-lg font-semibold">{name || "User"}</h2>
+            <p className="text-sm text-gray-500">{email}</p>
+
+            <hr className="my-10" />
+
+            <div className="space-y-5 text-left">
+              {/* Riwayat Penyakit */}
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-lg">
+                  <HeartPulse size={18} className="text-[#295f4e]" />
+                </div>
+                <div>
+                  <p className="text-xs text-gray-500">Riwayat Penyakit</p>
+                  <p className="font-medium">{medicalHistory || "-"}</p>
+                </div>
+              </div>
+
+              {/* Status Kesehatan */}
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-lg">
+                  <Activity size={18} className="text-[#295f4e]" />
+                </div>
+                <div>
+                  <p className="text-xs text-gray-500">Status Kesehatan</p>
+                  <p className="font-medium">{statusKesehatan || ""}</p>
+                </div>
+              </div>
+
+              {/* Jumlah Pengecekan */}
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-lg">
+                  <BarChart3 size={18} className="text-[#295f4e]" />
+                </div>
+                <div>
+                  <p className="text-xs text-gray-500">Jumlah Pengecekan</p>
+                  <p className="font-medium">{jumlahPengecekan || "0"}x</p>
+                </div>
+              </div>
+            </div>
+            {/* BUTTON */}
+            <button className="w-full mt-auto bg-[#295f4e] text-white py-3 rounded-xl hover:bg-[#1f4a3c] transition flex items-center justify-center gap-2">
+              <Key size={18} />
+              <span>Ganti Password</span>
+              <ChevronRight size={18} />
+            </button>
+          </div>
+
+          {/* RIGHT FORM */}
+          <div className="md:col-span-2 bg-white rounded-2xl shadow p-6">
+            <h2 className="text-xl font-semibold mb-4">Informasi Profil</h2>
+
+            <div className="space-y-4">
+              {/* Nama */}
+              <div>
+                <label className="text-sm text-gray-600">Nama Lengkap</label>
                 <input
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Masukkan nama lengkap"
-                  className="w-full bg-gray-50 border-2 border-[#BAD8B6] rounded-2xl p-3.5"
+                  className="w-full mt-1 p-3 rounded-xl bg-gray-100 outline-none"
                 />
               </div>
 
-              {/* Field No Telp */}
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700 ml-1">
-                  No. Telepon
-                </label>
-                <input
-                  type="tel"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="Contoh: 0812xxxx"
-                  className="w-full bg-gray-50 border-2 border-[#BAD8B6] rounded-2xl p-3.5"
-                />
-              </div>
-
-              {/* Field Email */}
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700 ml-1">
-                  Alamat Email
-                </label>
+              {/* Email */}
+              <div>
+                <label className="text-sm text-gray-600">Email</label>
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-gray-50 border-2 border-[#BAD8B6] rounded-2xl p-3.5"
+                  className="w-full mt-1 p-3 rounded-xl bg-gray-100 outline-none"
                 />
               </div>
 
-              {/* Field Password */}
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700 ml-1">
-                  Kata Sandi Baru
+              {/* Riwayat Penyakit */}
+              <div>
+                <label className="text-sm text-gray-600">
+                  Riwayat Penyakit
                 </label>
-                <div className="relative group">
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••"
-                    className="w-full bg-gray-50 border-2 border-[#BAD8B6] rounded-2xl p-3.5"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-                  >
-                    {showPassword ? (
-                      <span className="text-xs font-bold">SEMBUNYI</span>
-                    ) : (
-                      <span className="text-xs font-bold">LIHAT</span>
-                    )}
-                  </button>
-                </div>
+                <input
+                  type="text"
+                  value={medicalHistory}
+                  onChange={(e) => setMedicalHistory(e.target.value)}
+                  className="w-full mt-1 p-3 rounded-xl bg-gray-100 outline-none"
+                />
               </div>
-            </div>
 
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 mt-16 border-t border-gray-50 pt-10">
-              <button
-                onClick={() => navigate("/history")}
-                className="border-2 bg-[#327E66]  text-white px-10 py-4 rounded-2xl flex-1"
-              >
-                Riwayat Cek Kesehatan
-              </button>
+              {/* Status */}
+              <div>
+                <label className="text-sm text-gray-600">
+                  Status Kesehatan
+                </label>
+                <input
+                  type="text"
+                  value={statusKesehatan}
+                  onChange={(e) => setStatusKesehatan(e.target.value)}
+                  className="w-full mt-1 p-3 rounded-xl bg-gray-100 outline-none"
+                />
+              </div>
 
+              {/* Jumlah */}
+              <div>
+                <label className="text-sm text-gray-600">
+                  Jumlah Pengecekan
+                </label>
+                <input
+                  type="number"
+                  value={jumlahPengecekan}
+                  onChange={(e) => setJumlahPengecekan(e.target.value)}
+                  className="w-full mt-1 p-3 rounded-xl bg-gray-100 outline-none"
+                />
+              </div>
+
+              {/* SAVE */}
               <button
-                onClick={() => navigate("/", { replace: true })}
-                className="border-2 border-red-100 text-red-500 px-10 py-4 rounded-2xl font-bold flex-1"
+                onClick={() => alert("Data berhasil disimpan")}
+                className="w-full mt-4 bg-[#295f4e] text-white py-3 rounded-xl hover:bg-[#1f4a3c] transition"
               >
-                Keluar Profile
+                Simpan Perubahan
               </button>
             </div>
           </div>
